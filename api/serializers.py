@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.models import Company, Day, RegistrationRequest, Payment, Worker
+from api.models import Company, Day, RegistrationRequest, Payment, Worker, Administrator
 
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
@@ -27,4 +27,8 @@ class PaymentSerializer(serializers.ModelSerializer):
 class WorkerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Worker
+        fields = '__all__'
+class AdministratorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Administrator
         fields = '__all__'
