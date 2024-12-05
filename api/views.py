@@ -1,6 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
-from api.models import Company, Day, RegistrationRequest, Payment, Worker, Administrator
-from .serializers import CompanySerializer, DaySerializer, RegistrationRequestSerializer, PaymentSerializer, WorkerSerializer, AdministratorSerializer
+from api.models import Company, Day, RegistrationRequest, Payment, Worker, Administrator, LeaveRequest
+from .serializers import (CompanySerializer, DaySerializer, RegistrationRequestSerializer,
+                          PaymentSerializer, WorkerSerializer, AdministratorSerializer, LeaveRequestSerializer)
 
 class CompanyViewSet(ModelViewSet):
     queryset = Company.objects.all()
@@ -28,3 +29,7 @@ class WorkerViewSet(ModelViewSet):
 class AdministratorViewSet(ModelViewSet):
     queryset = Administrator.objects.all()
     serializer_class = AdministratorSerializer
+
+class LeaveRequestViewSet(ModelViewSet):
+    queryset = LeaveRequest.objects.all()
+    serializer_class = LeaveRequestSerializer

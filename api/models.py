@@ -46,3 +46,18 @@ class Payment(models.Model):
     employee = models.ForeignKey(Worker, on_delete=models.CASCADE)
     administrator = models.ForeignKey(Administrator, on_delete=models.CASCADE)
     date = models.DateField()
+
+
+class LeaveRequest(models.Model):
+    TYPE_CHOICES = [
+        ('sick', 'Больничный'),
+        ('vacation', 'Отпуск'),
+    ]
+
+    full_name = models.CharField(max_length=255)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    leave_type = models.CharField(max_length=20, choices=TYPE_CHOICES)
+
+    def __str__(self):
+        return f"{self.full_name} ({self.get_leave_type_display()})"
