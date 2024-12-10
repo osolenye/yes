@@ -30,7 +30,7 @@ class Administrator(models.Model):
 
 
 class Day(models.Model):
-    worked = models.BooleanField()
+    span = models.CharField(max_length=255)  # e.g., "09:00-17:00"
     worker = models.ForeignKey(Worker, on_delete=models.CASCADE)
     administrator = models.ForeignKey(Administrator, on_delete=models.CASCADE)
 
