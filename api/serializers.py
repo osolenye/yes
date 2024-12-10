@@ -60,6 +60,7 @@ class AdministratorLoginSerializer(serializers.Serializer):
 
         refresh = RefreshToken.for_user(admin)
         return {
+            'id': admin.id,  # Add the admin's ID to the response
             'access': str(refresh.access_token),
             'refresh': str(refresh),
         }

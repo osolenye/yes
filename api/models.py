@@ -55,7 +55,7 @@ class LeaveRequest(models.Model):
         ('rejected', 'Отклонено'),
     ]
 
-    full_name = models.CharField(max_length=255)
+    worker = models.ForeignKey(Worker, on_delete=models.CASCADE)
     start_date = models.DateField()
     end_date = models.DateField()
     leave_type = models.CharField(max_length=50)
@@ -64,5 +64,6 @@ class LeaveRequest(models.Model):
         choices=STATUS_CHOICES,
         default='pending'
     )
+
     def __str__(self):
-        return f"{self.full_name} ({self.get_leave_type_display()})"
+        return f"{self.worker.name} {self.worker.surname} ({self.get_leave_type_display()})"
