@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from api.models import Company, Day, RegistrationRequest, Payment, Worker, Administrator, LeaveRequest
+from api.models import Company, Day, RegistrationRequest, Payment, Worker, Administrator, LeaveRequest, CustomUser
+
 
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
@@ -79,3 +80,26 @@ class AdministratorLoginSerializer(serializers.Serializer):
             'access': str(refresh.access_token),
             'refresh': str(refresh),
         }
+
+class CustomUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ('username', 'password')
+        write_only_fields = ('password',)
+
+    def create(self, validated_data):
+        user = CustomUser.objects.create_user(**validated_data)
+        return user
+
+class WorkerRegistrationSerializer(serializers.ModelSerializer):
+    user = CustomUserSerializer()
+
+    class Meta:
+        model = Worker
+        fields = ('name', 'surname', 'salary', 'phone_number', 'position', 'company', 'user')
+
+    def create(self, validated_data):
+        user_data = validated_data.pop('user')
+        user = CustomUserSerializer.create(CustomUserSerializer(), validated_data=user_data)
+        worker = Worker.objects.create(user=user, **validated_data)
+        return worker

@@ -1,3 +1,4 @@
+from rest_framework.status import HTTP_404_NOT_FOUND
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
@@ -6,7 +7,7 @@ from rest_framework import status, viewsets
 from api.models import Company, Day, RegistrationRequest, Payment, Worker, Administrator, LeaveRequest
 from .serializers import (CompanySerializer, DaySerializer, RegistrationRequestSerializer,
                           PaymentSerializer, WorkerSerializer, AdministratorSerializer, LeaveRequestSerializer,
-                          AdministratorLoginSerializer)
+                          AdministratorLoginSerializer, WorkerRegistrationSerializer)
 
 class CompanyViewSet(ModelViewSet):
     queryset = Company.objects.all()
@@ -154,3 +155,11 @@ class PaymentWorker(ModelViewSet):
                 {"error": f"Произошла ошибка: {str(e)}"},
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+class WorkerRegistrationView(APIView):
+    def post(self, request):
+        serializer = WorkerRegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
