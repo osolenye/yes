@@ -8,9 +8,9 @@ router.register(r'companies', CompanyViewSet)
 router.register(r'days', DayViewSet)
 router.register(r'registration-requests', RegistrationRequestViewSet)
 router.register(r'payments', PaymentViewSet)
-router.register(r'workers', WorkerViewSet, basename='worker')  # Указываем basename
+router.register(r'workers', WorkerViewSet, basename='worker')
 router.register(r'administrators', AdministratorViewSet)
-router.register(r'leave-requests', LeaveRequestViewSet)
+router.register(r'leave-requests', LeaveRequestViewSet, basename='leave-request')
 
 
 urlpatterns = [

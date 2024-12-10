@@ -49,15 +49,20 @@ class Payment(models.Model):
 
 
 class LeaveRequest(models.Model):
-    TYPE_CHOICES = [
-        ('sick', 'Больничный'),
-        ('vacation', 'Отпуск'),
+    STATUS_CHOICES = [
+        ('pending', 'Ожидание'),
+        ('approved', 'Одобрено'),
+        ('rejected', 'Отклонено'),
     ]
 
     full_name = models.CharField(max_length=255)
     start_date = models.DateField()
     end_date = models.DateField()
-    leave_type = models.CharField(max_length=20, choices=TYPE_CHOICES)
-
+    leave_type = models.CharField(max_length=50)
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default='pending'
+    )
     def __str__(self):
         return f"{self.full_name} ({self.get_leave_type_display()})"
