@@ -97,3 +97,25 @@ class AdministratorLoginView(APIView):
         if serializer.is_valid():
             return Response(serializer.validated_data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class WorkerDetailsWithPayments(APIView):
+    """
+    API endpoint to retrieve worker details and associated payments.
+    """
+
+    def get(self, request, worker_id):
+        try:
+            worker = Worker.objects.get(pk=worker_id)
+            worker_serializer = WorkerSerializer(worker)
+
+            payments = Payment.objects.filter(employee_id=worker_id)
+            payment_serializer = PaymentSerializer(payments, many=True)
+
+            return Response({
+                "worker": worker_serializer.data,
+                "payments": payment_serializer.data
+            })
+        except Worker.DoesNotExist:
+            return Response({"error": "Worker not found"}, status=HTTP_404_NOT_FOUND)
