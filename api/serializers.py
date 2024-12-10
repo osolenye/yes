@@ -21,15 +21,30 @@ class RegistrationRequestSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class PaymentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Payment
-        fields = '__all__'
+# class PaymentSerializer(serializers.ModelSerializer):
+#     worker = WorkerSerializer(read_only=True)
+#     class Meta:
+#         model = Payment
+#         fields = '__all__'
+#
+# class WorkerSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Worker
+#         fields = '__all__'
 
 class WorkerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Worker
+        # fields = ('id', 'name', 'surname')  # Customize the fields as needed
         fields = '__all__'
+
+class PaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = '__all__'
+        # fields = ('id', 'amount', 'date', 'worker')
+
+
 class AdministratorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Administrator

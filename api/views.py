@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from rest_framework import status
+from rest_framework import status, viewsets
 from api.models import Company, Day, RegistrationRequest, Payment, Worker, Administrator, LeaveRequest
 from .serializers import (CompanySerializer, DaySerializer, RegistrationRequestSerializer,
                           PaymentSerializer, WorkerSerializer, AdministratorSerializer, LeaveRequestSerializer,
@@ -119,3 +119,38 @@ class WorkerDetailsWithPayments(APIView):
             })
         except Worker.DoesNotExist:
             return Response({"error": "Worker not found"}, status=HTTP_404_NOT_FOUND)
+
+
+
+class PaymentWorker(ModelViewSet):
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
+
+    @action(detail=False, methods=['get'])
+    def with_worker_info(self, request):
+        try:
+            payments = Payment.objects.select_related('employee')  # Используем select_related для оптимизации запросов
+            payment_data = []
+
+            for payment in payments:
+                payment_info = {
+                    'id': payment.id,
+                    'amount': payment.amount,
+                    'date': payment.date,
+                    'worker': {
+                        'id': payment.employee.id,
+                        'name': payment.employee.name,
+                        'surname': payment.employee.surname,
+                        'position': payment.employee.position,
+                        'salary': payment.employee.salary,
+                    }
+                }
+                payment_data.append(payment_info)
+
+            return Response(payment_data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(
+                {"error": f"Произошла ошибка: {str(e)}"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
