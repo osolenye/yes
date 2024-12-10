@@ -76,10 +76,20 @@ WSGI_APPLICATION = 'PayRollManager.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'payroll',  # имя базы данных
+        'USER': 'postgres',  # имя пользователя
+        'PASSWORD': 'root',  # пароль
+        'HOST': 'localhost',  # или IP-адрес, если база на другом сервере
+        'PORT': '5432',  # стандартный порт для PostgreSQL
     }
 }
 
