@@ -81,6 +81,7 @@ CORS_ALLOW_METHODS = [
     'PUT',
     'DELETE',
     'OPTIONS',
+    'PATCH',
 ]
 
 ROOT_URLCONF = 'PayRollManager.urls'
